@@ -11,9 +11,7 @@ curl -s -w '"'"'\\n%{http_code}'"'"' -H '"'"'Content-Type: application/json'"'"'
 echo '-------------------------
 --------------------------------------------------
 ---------------------------------------------------------------------------'
-echo 'this script must be run as the root user. if you are a member of sudo you can run the script with the below command, otherwise log in as root before running this script:'
-echo 'sudo su -c "/home/user/scripts/wc.sh" - root'
-read -p 'are you running the script as root, and do you have your api key, farm id, and worker id (y/n)? ' apicheck
+read -p 'do you have your api key, farm id, and worker id (y/n)? ' apicheck
 if [[ "$apicheck" =~ [Yy] ]] ; then
   mkdir -p /home/user/scripts
   cd /home/user/scripts
@@ -61,16 +59,16 @@ if [[ "$apicheck" =~ [Yy] ]] ; then
     sed -Ei 's/# (curl -X POST -H.*ifttt)/\1/' /home/user/scripts/worker_check.sh
   fi
 
-  apikeycheck=$( echo "$apikey" | sed 's/[\.a-zA-Z]//g' | bc )
+  apikeycheck=$( echo "$apikey" | sed 's/[\.a-zA-Z]//g' | sed -E 's/^([0-9][0-9][0-9][0-9][0-9]).*$/\1/' | bc )
   farmidcheck=$( echo "$farmid" | bc )
   workeridcheck=$( echo "$workerid" | bc )
   if [[ "$apikeycheck" -gt 0 ]] && [[ "$farmidcheck" -gt 0 ]] && [[ "$workeridcheck" -gt 0 ]] ; then
     wget https://raw.githubusercontent.com/billkenney/worker_check/main/worker_check.service
-    wget https://github.com/billkenney/worker_check/blob/main/worker_check.timer
-    chown root:root worker_check.service worker_check.timer
-    mv worker_check.service worker_check.timer /etc/systemd/system
-    systemctl daemon-reload
-    systemctl enable worker_check.timer
+    wget https://raw.githubusercontent.com/billkenney/worker_check/main/worker_check.timer
+    sudo chown root:root worker_check.service worker_check.timer
+    sudo mv worker_check.service worker_check.timer /etc/systemd/system
+    sudo systemctl daemon-reload
+    sudo systemctl enable worker_check.timer
   elif [[ "$apikeycheck" -eq 0 ]] ; then
     echo 'please run the script again and input a valid api key...'
     exit
@@ -81,6 +79,7 @@ if [[ "$apicheck" =~ [Yy] ]] ; then
     echo 'please run the script again and input a valid worker id...'
     exit
   fi
+
   chmod +x /home/user/scripts/worker_check.sh
   touch /home/user/worker_check.log
   chown user:user /home/user/scripts/worker_check.sh /home/user/scripts/wc.sh /home/user/worker_check.log
