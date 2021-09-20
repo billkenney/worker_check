@@ -84,6 +84,7 @@ if [[ "$apicheck" =~ [Yy] ]] ; then
   chmod +x /home/user/scripts/worker_check.sh
   touch /home/user/worker_check.log
   chown user:user /home/user/scripts/worker_check.sh /home/user/scripts/wc.sh /home/user/worker_check.log
+
 elif [[ "$apicheck" =~ [Nn] ]] ; then
   echo 'please generate and save your api key, farm id(s), and worker id(s) and run this script again...'
 else
