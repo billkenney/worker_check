@@ -35,7 +35,7 @@ if [[ "$apicheck" =~ [Yy] ]] ; then
     cat /home/user/scripts/worker_check.sh lol_check > /tmp/wc
     mv /tmp/wc /home/user/scripts/worker_check.sh
     rm /home/user/scripts/lol_check
-    read -p 'how many teamredminer gpus are you mining with (e.g., 1, 2, 8, etc)? ' lolgpus
+    read -p 'how many lolminer gpus are you mining with (e.g., 1, 2, 8, etc)? ' lolgpus
     sed -i "s/{lolgpus}/$lolgpus/g" /home/user/scripts/worker_check.sh
   fi
 
