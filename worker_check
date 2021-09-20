@@ -10,6 +10,7 @@ if [[ "$gpus_online" -lt 8 ]] && [[ "$gpus_offline" -gt 0 ]] ; then
   curl -s -w '\n%{http_code}' -H 'Content-Type: application/json' -H 'Authorization: Bearer {apikey}' https://api2.hiveos.farm/api/v2/farms/{farmid}/workers/{workerid} | sed 's/^000-H//g;/^200-H/d;/^200$/d' | jq '.' > /tmp/worker_check
   if [[ "$gpus_online1" -lt 8 ]] && [[ "$gpus_offline1" -gt 0 ]] ; then
     echo "script restarted worker due to only $gpus_online gpus being online and $gpus_offline gpus being offline at `date '+%Y-%m-%d_%H:%M:%S'`" >> /home/user/worker_check.log
+    # curl -X POST -H "Content-Type: application/json" -d '{"value1":"{rigname} restarted due to gpus being offline per the hiveos api"}' https://maker.ifttt.com/trigger/notify/with/key/{iftttkey} ; wait
     sudo reboot
   fi
 fi
@@ -35,12 +36,15 @@ if [[ "$missed_unit_check" -eq 1 ]] || [[ "$missed_hashrate_check" -eq 1 ]] || [
   curl -s -w '\n%{http_code}' -H 'Content-Type: application/json' -H 'Authorization: Bearer {apikey}' https://api2.hiveos.farm/api/v2/farms/{farmid}/workers/{workerid} | sed 's/^000-H//g;/^200-H/d;/^200$/d' | jq '.' > /tmp/worker_check
   if [[ "$missed_unit_check1" -eq 1 ]] ; then
     echo "script restarted worker due to worker having a missed_unit at `date '+%Y-%m-%d_%H:%M:%S'`" >> /home/user/worker_check.log
+    # curl -X POST -H "Content-Type: application/json" -d '{"value1":"{rigname} restarted due to worker having a missed_unit per the hiveos api"}' https://maker.ifttt.com/trigger/notify/with/key/{iftttkey} ; wait
     sudo reboot
   elif [[ "$missed_hashrate_check1" -eq 1 ]] ; then
     echo "script restarted worker due to worker having a missed_hashrate at `date '+%Y-%m-%d_%H:%M:%S'`" >> /home/user/worker_check.log
+    # curl -X POST -H "Content-Type: application/json" -d '{"value1":"{rigname} restarted due to worker having a missed_hashrate per the hiveos api"}' https://maker.ifttt.com/trigger/notify/with/key/{iftttkey} ; wait
     sudo reboot
   elif [[ "$no_hashrate_check1" -eq 1 ]] ; then
     echo "script restarted worker due to worker having no_hashrate at `date '+%Y-%m-%d_%H:%M:%S'`" >> /home/user/worker_check.log
+    # curl -X POST -H "Content-Type: application/json" -d '{"value1":"{rigname} restarted due to worker having a no_hashrate per the hiveos api"}' https://maker.ifttt.com/trigger/notify/with/key/{iftttkey} ; wait
     sudo reboot
   fi
 fi
@@ -53,6 +57,7 @@ if [[ "$worker_status" = 'false' ]] ; then
   curl -s -w '\n%{http_code}' -H 'Content-Type: application/json' -H 'Authorization: Bearer {apikey}' https://api2.hiveos.farm/api/v2/farms/{farmid}/workers/{workerid} | sed 's/^000-H//g;/^200-H/d;/^200$/d' | jq '.' > /tmp/worker_check
   if [[ "$worker_status1" = 'false' ]] ; then
     echo "script restarted worker due to worker being offline at `date '+%Y-%m-%d_%H:%M:%S'`" >> /home/user/worker_check.log
+    # curl -X POST -H "Content-Type: application/json" -d '{"value1":"{rigname} restarted due to worker being offline per the hiveos api"}' https://maker.ifttt.com/trigger/notify/with/key/{iftttkey} ; wait
     sudo reboot
   fi
 elif [[ "$worker_status" != 'true' ]] && [[ "$worker_status" != 'false' ]] ; then
@@ -61,7 +66,7 @@ elif [[ "$worker_status" != 'true' ]] && [[ "$worker_status" != 'false' ]] ; the
   curl -s -w '\n%{http_code}' -H 'Content-Type: application/json' -H 'Authorization: Bearer {apikey}' https://api2.hiveos.farm/api/v2/farms/{farmid}/workers/{workerid} | sed 's/^000-H//g;/^200-H/d;/^200$/d' | jq '.' > /tmp/worker_check
   if [[ "$worker_status1" != 'true' ]] && [[ "$worker_status1" != 'false' ]] ; then
     echo "script is still unable to check the online status of worker at `date '+%Y-%m-%d_%H:%M:%S'`" >> /home/user/worker_check.log
-    # curl -X POST -H "Content-Type: application/json" -d '{"value1":"{rigname} is unable to check its online status using the hiveos api"}' https://maker.ifttt.com/trigger/notify/with/key/{iftttkey}
+    # curl -X POST -H "Content-Type: application/json" -d '{"value1":"{rigname} restarted because it is unable to check its online status using the hiveos api"}' https://maker.ifttt.com/trigger/notify/with/key/{iftttkey} ; wait
     sudo reboot
   fi
 fi
