@@ -1,7 +1,7 @@
 
 grep -o 'Average speed.*$' /var/log/miner/lolminer/lolminer.log | tail -1 | sed 's/ Total.*$//;s/Average.*): //;s/mh\/s | /\n/g;s/mh\/s//' > /tmp/lol.log
 
-gpu_count=$( wc -l /tmp/lol.log )
+gpu_count=$( wc -l /tmp/lol.log | sed -E 's/^([0-9]*) .*$/\1/' | bc )
 if [[ "$gpu_count" -lt {lolgpus} ]] ; then
   echo "script initiated due to an lolminer gpu missing at `date '+%Y-%m-%d_%H:%M:%S'`" >> /home/user/worker_check.log
   sleep 180
