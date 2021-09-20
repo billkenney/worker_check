@@ -5,7 +5,7 @@ gpu_count=$( wc -l /tmp/lol.log | sed -E 's/^([0-9]*) .*$/\1/' | bc )
 if [[ "$gpu_count" -lt {lolgpus} ]] ; then
   echo "script initiated due to an lolminer gpu missing at `date '+%Y-%m-%d_%H:%M:%S'`" >> /home/user/worker_check.log
   sleep 180
-  grep -o 'Average speed.*$' /var/log/miner/lolminer/lolminer.log | tail -1 | sed 's/ Total.*$//;s/Average.*): //;s/mh\/s | /\n/g;s/mh\/s//' > /tmp/lol.log
+  tail -100 /var/log/miner/lolminer/lolminer.log | grep -o 'Average speed.*$' | tail -1 | sed 's/ Total.*$//;s/Average.*): //;s/mh\/s | /\n/g;s/mh\/s//;/^$/d' > /tmp/lol.log
   if [[ "$gpu_count" -lt {lolgpus} ]] ; then
     echo "script restarted worker due to an lolminer gpu missing at `date '+%Y-%m-%d_%H:%M:%S'`" >> /home/user/worker_check.log
     # curl -X POST -H "Content-Type: application/json" -d '{"value1":"{rigname} restarted due to an lolminer gpu missing"}' https://maker.ifttt.com/trigger/notify/with/key/{iftttkey} ; wait
@@ -18,7 +18,7 @@ while read line ; do
   if [[ "$hash_rate" -eq 0 ]] ; then
     echo "script initiated due to an lolminer gpu having no hashrate at `date '+%Y-%m-%d_%H:%M:%S'`" >> /home/user/worker_check.log
     sleep 180
-    grep -o 'Average speed.*$' /var/log/miner/lolminer/lolminer.log | tail -1 | sed 's/ Total.*$//;s/Average.*): //;s/mh\/s | /\n/g;s/mh\/s//' > /tmp/lol.log
+    tail -100 /var/log/miner/lolminer/lolminer.log | grep -o 'Average speed.*$' | tail -1 | sed 's/ Total.*$//;s/Average.*): //;s/mh\/s | /\n/g;s/mh\/s//;/^$/d' > /tmp/lol.log
     while read line ; do
       hash_rate=$( echo "$line" | bc )
       if [[ "$hash_rate" -eq 0 ]] ; then
