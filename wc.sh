@@ -77,7 +77,7 @@ if [[ "$apicheck" =~ [Yy] ]] ; then
   elif [[ "$farmidcheck" -eq 0 ]] ; then
     echo 'please run the script again and input a valid farm id...'
     exit
-  elif [[ "$workeridcheck" -gt 0 ]] ; then
+  elif [[ "$workeridcheck" -eq 0 ]] ; then
     echo 'please run the script again and input a valid worker id...'
     exit
   fi
