@@ -13,7 +13,7 @@ if [[ "$gpu_count" -lt {lolgpus} ]] ; then
 fi
 
 while read line ; do
-  hash_rate=$( echo "$line" | bc )
+  hash_rate=$( echo "$line" | sed -E 's/^([0-9]*)\..*$/\1/' | bc )
   if [[ "$hash_rate" -eq 0 ]] ; then
     echo "script initiated due to an lolminer gpu having no hashrate at `date '+%Y-%m-%d_%H:%M:%S'`" >> /home/user/worker_check.log
     sleep 180
