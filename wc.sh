@@ -45,7 +45,8 @@ if [[ "$apicheck" =~ [Yy] ]] ; then
   read -p 'are you using ifttt for notifications (y/n)? ' iftttcheck
   if [[ "$iftttcheck" =~ [Yy] ]] ; then
     read -p 'what is your ifttt api key? ' iftttkey
-    sed -i "s/{iftttkey}/$iftttkey/g" /home/user/scripts/worker_check.sh
+    read -p 'what is the name of your mining rig (e.g., worker1, worker2, etc): ' rigname
+    sed -i "s/{iftttkey}/$iftttkey/g;s/{rigname}/$rigname/g" /home/user/scripts/worker_check.sh
     sed -Ei 's/# (curl -X POST -H.*ifttt)/\1/' /home/user/scripts/worker_check.sh
   fi
 
