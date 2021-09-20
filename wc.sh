@@ -14,24 +14,35 @@ echo '-------------------------
 read -p 'do you have your api key, farm id, and worker id (y/n)? ' apicheck
 if [[ "$apicheck" =~ [Yy] ]] ; then
   mkdir -p /home/user/scripts
-  echo '#!/bin/bash\n' > /home/user/scripts/worker_check.sh
+  cd /home/user/scripts
+  echo '#!/bin/bash
+' > /home/user/scripts/worker_check.sh
   chmod +x /home/user/scripts/worker_check.sh
 
   read -p 'are you using teamredminer (y/n)? ' trmcheck
   if [[ "$trmcheck" =~ [Yy] ]] ; then
-    wget https://raw.githubusercontent.com/billkenney/worker_check/main/trm_check >> /home/user/scripts/worker_check.sh
+    wget https://raw.githubusercontent.com/billkenney/worker_check/main/trm_check
+    cat /home/user/scripts/worker_check.sh /home/user/scripts/trm_check > /tmp/wc
+    mv /tmp/wc /home/user/scripts/worker_check.sh
+    rm /home/user/scripts/trm_check
     read -p 'how many teamredminer gpus are you mining with (e.g., 1, 2, 8, etc)? ' trmgpus
     sed -i "s/{trmgpus}/$trmgpus/g" /home/user/scripts/worker_check.sh
   fi
 
   read -p 'are you using lolminer (y/n)? ' lolcheck
   if [[ "$lolcheck" =~ [Yy] ]] ; then
-    wget https://raw.githubusercontent.com/billkenney/worker_check/main/lol_check >> /home/user/scripts/worker_check.sh
+    wget https://raw.githubusercontent.com/billkenney/worker_check/main/lol_check
+    cat /home/user/scripts/worker_check.sh lol_check > /tmp/wc
+    mv /tmp/wc /home/user/scripts/worker_check.sh
+    rm /home/user/scripts/lol_check
     read -p 'how many teamredminer gpus are you mining with (e.g., 1, 2, 8, etc)? ' lolgpus
     sed -i "s/{lolgpus}/$lolgpus/g" /home/user/scripts/worker_check.sh
   fi
 
-  wget https://raw.githubusercontent.com/billkenney/worker_check/main/worker_check >> /home/user/scripts/worker_check.sh
+  wget https://raw.githubusercontent.com/billkenney/worker_check/main/worker_check
+  cat /home/user/scripts/worker_check.sh worker_check > /tmp/wc
+  mv /tmp/wc /home/user/scripts/worker_check.sh
+  rm /home/user/scripts/worker_check
 
   read -p 'what is your hiveos api key? ' apikey
   sed -i "s/{apikey}/$apikey/g" /home/user/scripts/worker_check.sh
@@ -67,7 +78,7 @@ if [[ "$apicheck" =~ [Yy] ]] ; then
     echo 'please run the script again and input a valid farm id...'
     exit
   elif [[ "$workeridcheck" -gt 0 ]] ; then
-    'please run the script again and input a valid worker id...'
+    echo 'please run the script again and input a valid worker id...'
     exit
   fi
 elif [[ "$apicheck" =~ [Nn] ]] ; then
