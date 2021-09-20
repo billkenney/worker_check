@@ -61,7 +61,7 @@ elif [[ "$worker_status" != 'true' ]] && [[ "$worker_status" != 'false' ]] ; the
   curl -s -w '\n%{http_code}' -H 'Content-Type: application/json' -H 'Authorization: Bearer {apikey}' https://api2.hiveos.farm/api/v2/farms/{farmid}/workers/{workerid} | sed 's/^000-H//g;/^200-H/d;/^200$/d' | jq '.' > /tmp/worker_check
   if [[ "$worker_status1" != 'true' ]] && [[ "$worker_status1" != 'false' ]] ; then
     echo "script is still unable to check the online status of worker at `date '+%Y-%m-%d_%H:%M:%S'`" >> /home/user/worker_check.log
-    # curl -X POST -H "Content-Type: application/json" -d '{"value1":"miner is unable to check its online status using the hiveos api"}' https://maker.ifttt.com/trigger/notify/with/key/{iftttkey}
+    # curl -X POST -H "Content-Type: application/json" -d '{"value1":"{rigname} is unable to check its online status using the hiveos api"}' https://maker.ifttt.com/trigger/notify/with/key/{iftttkey}
     sudo reboot
   fi
 fi
