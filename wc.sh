@@ -72,6 +72,6 @@ if [[ "$apicheck" =~ [Yy] ]] ; then
   fi
 elif [[ "$apicheck" =~ [Nn] ]] ; then
   echo 'please generate and save your api key, farm id(s), and worker id(s) and run this script again...'
-elif [[ "$apicheck" != [Yy] ]] && [[ "$apicheck" != [Nn] ]] ; then
+else
   echo 'invalid response, please run this script again and enter y/n at the prompt...'
 fi
