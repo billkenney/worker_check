@@ -1,5 +1,5 @@
 
-curl -s -w '\n%{http_code}' -H 'Content-Type: application/json' -H 'Authorization: Bearer {$apikey}' https://api2.hiveos.farm/api/v2/farms/{$farmid}/workers/{$workerid} | sed 's/^000-H//g;/^200-H/d;/^200$/d' | jq '.' > /tmp/worker_check
+curl -s -w '\n%{http_code}' -H 'Content-Type: application/json' -H 'Authorization: Bearer {apikey}' https://api2.hiveos.farm/api/v2/farms/{farmid}/workers/{workerid} | sed 's/^000-H//g;/^200-H/d;/^200$/d' | jq '.' > /tmp/worker_check
 gpus_online=$( grep '"gpus_online":' /tmp/worker_check | sed 's/[ ":,]//g;s/gpus_online//' | bc )
 gpus_online1=$( grep '"gpus_online":' /tmp/worker_check | sed 's/[ ":,]//g;s/gpus_online//' | bc )
 gpus_offline=$( grep '"gpus_offline":' /tmp/worker_check | sed 's/[ ":,]//g;s/gpus_offline//' | bc )
@@ -7,7 +7,7 @@ gpus_offline1=$( grep '"gpus_offline":' /tmp/worker_check | sed 's/[ ":,]//g;s/g
 if [[ "$gpus_online" -lt 8 ]] && [[ "$gpus_offline" -gt 0 ]] ; then
   echo "script initiated due to only $gpus_online gpus being online and $gpus_offline gpus being offline at `date '+%Y-%m-%d_%H:%M:%S'`" >> /home/user/worker_check.log
   sleep 180
-  curl -s -w '\n%{http_code}' -H 'Content-Type: application/json' -H 'Authorization: Bearer {$apikey}' https://api2.hiveos.farm/api/v2/farms/{$farmid}/workers/{$workerid} | sed 's/^000-H//g;/^200-H/d;/^200$/d' | jq '.' > /tmp/worker_check
+  curl -s -w '\n%{http_code}' -H 'Content-Type: application/json' -H 'Authorization: Bearer {apikey}' https://api2.hiveos.farm/api/v2/farms/{farmid}/workers/{workerid} | sed 's/^000-H//g;/^200-H/d;/^200$/d' | jq '.' > /tmp/worker_check
   if [[ "$gpus_online1" -lt 8 ]] && [[ "$gpus_offline1" -gt 0 ]] ; then
     echo "script restarted worker due to only $gpus_online gpus being online and $gpus_offline gpus being offline at `date '+%Y-%m-%d_%H:%M:%S'`" >> /home/user/worker_check.log
     sudo reboot
@@ -32,7 +32,7 @@ if [[ "$missed_unit_check" -eq 1 ]] || [[ "$missed_hashrate_check" -eq 1 ]] || [
     echo "script initiated due to worker having no_hashrate at `date '+%Y-%m-%d_%H:%M:%S'`" >> /home/user/worker_check.log
     sleep 180
   fi
-  curl -s -w '\n%{http_code}' -H 'Content-Type: application/json' -H 'Authorization: Bearer {$apikey}' https://api2.hiveos.farm/api/v2/farms/{$farmid}/workers/{$workerid} | sed 's/^000-H//g;/^200-H/d;/^200$/d' | jq '.' > /tmp/worker_check
+  curl -s -w '\n%{http_code}' -H 'Content-Type: application/json' -H 'Authorization: Bearer {apikey}' https://api2.hiveos.farm/api/v2/farms/{farmid}/workers/{workerid} | sed 's/^000-H//g;/^200-H/d;/^200$/d' | jq '.' > /tmp/worker_check
   if [[ "$missed_unit_check1" -eq 1 ]] ; then
     echo "script restarted worker due to worker having a missed_unit at `date '+%Y-%m-%d_%H:%M:%S'`" >> /home/user/worker_check.log
     sudo reboot
@@ -50,7 +50,7 @@ worker_status1=$( grep '"online": ' /tmp/worker_check | sed 's/[ ":,]//g;s/onlin
 if [[ "$worker_status" = 'false' ]] ; then
   echo "script initiated due to worker being offline at `date '+%Y-%m-%d_%H:%M:%S'`" >> /home/user/worker_check.log
   sleep 180
-  curl -s -w '\n%{http_code}' -H 'Content-Type: application/json' -H 'Authorization: Bearer {$apikey}' https://api2.hiveos.farm/api/v2/farms/{$farmid}/workers/{$workerid} | sed 's/^000-H//g;/^200-H/d;/^200$/d' | jq '.' > /tmp/worker_check
+  curl -s -w '\n%{http_code}' -H 'Content-Type: application/json' -H 'Authorization: Bearer {apikey}' https://api2.hiveos.farm/api/v2/farms/{farmid}/workers/{workerid} | sed 's/^000-H//g;/^200-H/d;/^200$/d' | jq '.' > /tmp/worker_check
   if [[ "$worker_status1" = 'false' ]] ; then
     echo "script restarted worker due to worker being offline at `date '+%Y-%m-%d_%H:%M:%S'`" >> /home/user/worker_check.log
     sudo reboot
@@ -58,10 +58,10 @@ if [[ "$worker_status" = 'false' ]] ; then
 elif [[ "$worker_status" != 'true' ]] && [[ "$worker_status" != 'false' ]] ; then
   echo "script initiated at `date '+%Y-%m-%d_%H:%M:%S'` but was unable to check the online status of worker" >> /home/user/worker_check.log
   sleep 300
-  curl -s -w '\n%{http_code}' -H 'Content-Type: application/json' -H 'Authorization: Bearer {$apikey}' https://api2.hiveos.farm/api/v2/farms/{$farmid}/workers/{$workerid} | sed 's/^000-H//g;/^200-H/d;/^200$/d' | jq '.' > /tmp/worker_check
+  curl -s -w '\n%{http_code}' -H 'Content-Type: application/json' -H 'Authorization: Bearer {apikey}' https://api2.hiveos.farm/api/v2/farms/{farmid}/workers/{workerid} | sed 's/^000-H//g;/^200-H/d;/^200$/d' | jq '.' > /tmp/worker_check
   if [[ "$worker_status1" != 'true' ]] && [[ "$worker_status1" != 'false' ]] ; then
     echo "script is still unable to check the online status of worker at `date '+%Y-%m-%d_%H:%M:%S'`" >> /home/user/worker_check.log
-    # curl -X POST -H "Content-Type: application/json" -d '{"value1":"miner is unable to check its online status using the hiveos api"}' https://maker.ifttt.com/trigger/notify/with/key/{$iftttkey}
+    # curl -X POST -H "Content-Type: application/json" -d '{"value1":"miner is unable to check its online status using the hiveos api"}' https://maker.ifttt.com/trigger/notify/with/key/{iftttkey}
     sudo reboot
   fi
 fi
