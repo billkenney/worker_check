@@ -15,8 +15,7 @@ read -p 'do you have your api key, farm id, and worker id (y/n)? ' apicheck
 if [[ "$apicheck" =~ [Yy] ]] ; then
   mkdir -p /home/user/scripts
   cd /home/user/scripts
-  echo '#!/bin/bash
-' > /home/user/scripts/worker_check.sh
+  echo '#!/bin/bash' > /home/user/scripts/worker_check.sh
   chmod +x /home/user/scripts/worker_check.sh
 
   read -p 'are you using teamredminer (y/n)? ' trmcheck
