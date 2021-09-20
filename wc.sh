@@ -16,7 +16,6 @@ if [[ "$apicheck" =~ [Yy] ]] ; then
   mkdir -p /home/user/scripts
   cd /home/user/scripts
   echo '#!/bin/bash' > /home/user/scripts/worker_check.sh
-  chmod +x /home/user/scripts/worker_check.sh
 
   read -p 'are you using teamredminer (y/n)? ' trmcheck
   if [[ "$trmcheck" =~ [Yy] ]] ; then
@@ -34,7 +33,7 @@ if [[ "$apicheck" =~ [Yy] ]] ; then
     cat /home/user/scripts/worker_check.sh lol_check > /tmp/wc
     mv /tmp/wc /home/user/scripts/worker_check.sh
     rm /home/user/scripts/lol_check
-    read -p 'how many lolminer gpus are you mining with (e.g., 1, 2, 8, etc)? ' lolgpus
+    read -p 'how many teamredminer gpus are you mining with (e.g., 1, 2, 8, etc)? ' lolgpus
     sed -i "s/{lolgpus}/$lolgpus/g" /home/user/scripts/worker_check.sh
   fi
 
@@ -64,10 +63,10 @@ if [[ "$apicheck" =~ [Yy] ]] ; then
   farmidcheck=$( echo "$farmid" | bc )
   workeridcheck=$( echo "$workerid" | bc )
   if [[ "$apikeycheck" -gt 0 ]] && [[ "$farmidcheck" -gt 0 ]] && [[ "$workeridcheck" -gt 0 ]] ; then
-    wget https://raw.githubusercontent.com/billkenney/worker_check/main/worker_check.service > /tmp/worker_check.service
-    wget https://github.com/billkenney/worker_check/blob/main/worker_check.timer > /tmp/worker_check.timer
-    sudo chown root:root /tmp/worker_check.*
-    sudo mv /tmp/worker_check.* /etc/systemd/system
+    wget https://raw.githubusercontent.com/billkenney/worker_check/main/worker_check.service
+    wget https://github.com/billkenney/worker_check/blob/main/worker_check.timer
+    sudo chown root:root worker_check.service worker_check.timer
+    sudo mv worker_check.service worker_check.timer /etc/systemd/system
     sudo systemctl daemon-reload
     sudo systemctl enable worker_check.timer
   elif [[ "$apikeycheck" -eq 0 ]] ; then
@@ -85,3 +84,5 @@ elif [[ "$apicheck" =~ [Nn] ]] ; then
 else
   echo 'invalid response, please run this script again and enter y/n at the prompt...'
 fi
+
+chmod +x /home/user/scripts/worker_check.sh
