@@ -11,7 +11,8 @@ curl -s -w '"'"'\\n%{http_code}'"'"' -H '"'"'Content-Type: application/json'"'"'
 echo '-------------------------
 --------------------------------------------------
 ---------------------------------------------------------------------------'
-echo 'this script must be run as the root user. if you are a member of sudo you can run the script with the below command, otherwise log in as root before running this script:\nsudo su -c "/home/user/scripts/wc.sh" - root'
+echo 'this script must be run as the root user. if you are a member of sudo you can run the script with the below command, otherwise log in as root before running this script:'
+echo 'sudo su -c "/home/user/scripts/wc.sh" - root'
 read -p 'are you running the script as root, and do you have your api key, farm id, and worker id (y/n)? ' apicheck
 if [[ "$apicheck" =~ [Yy] ]] ; then
   mkdir -p /home/user/scripts
