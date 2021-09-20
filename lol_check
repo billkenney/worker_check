@@ -9,7 +9,7 @@ if [[ "$gpu_count" -lt {lolgpus} ]] ; then
   if [[ "$gpu_count" -lt {lolgpus} ]] ; then
     echo "script restarted worker due to an lolminer gpu missing at `date '+%Y-%m-%d_%H:%M:%S'`" >> /home/user/worker_check.log
     # curl -X POST -H "Content-Type: application/json" -d '{"value1":"{rigname} restarted due to an lolminer gpu missing"}' https://maker.ifttt.com/trigger/notify/with/key/{iftttkey} ; wait
-    sudo reboot
+    sudo miner stop ; wait ; sudo shutdown -r now
   fi
 fi
 
@@ -24,7 +24,7 @@ while read line ; do
       if [[ "$hash_rate" -eq 0 ]] ; then
         echo "script restarted worker due to an lolminer gpu having no hashrate at `date '+%Y-%m-%d_%H:%M:%S'`" >> /home/user/worker_check.log
         # curl -X POST -H "Content-Type: application/json" -d '{"value1":"{rigname} restarted due to an lolminer gpu having no hashrate"}' https://maker.ifttt.com/trigger/notify/with/key/{iftttkey} ; wait
-        sudo reboot
+        sudo miner stop ; wait ; sudo shutdown -r now
       fi
     done < /tmp/lol.log
   fi
