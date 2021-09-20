@@ -11,8 +11,7 @@ curl -s -w '"'"'\\n%{http_code}'"'"' -H '"'"'Content-Type: application/json'"'"'
 echo '-------------------------
 --------------------------------------------------
 ---------------------------------------------------------------------------'
-echo 'this script must be run as the root user. if you are a member of sudo you can run the script with the below command, otherwise log in as root before running this script:
-sudo su -c "/home/user/scripts/wc.sh" - root'
+echo 'this script must be run as the root user. if you are a member of sudo you can run the script with the below command, otherwise log in as root before running this script:\nsudo su -c "/home/user/scripts/wc.sh" - root'
 read -p 'are you running the script as root, and do you have your api key, farm id, and worker id (y/n)? ' apicheck
 if [[ "$apicheck" =~ [Yy] ]] ; then
   mkdir -p /home/user/scripts
@@ -81,12 +80,11 @@ if [[ "$apicheck" =~ [Yy] ]] ; then
     echo 'please run the script again and input a valid worker id...'
     exit
   fi
+  chmod +x /home/user/scripts/worker_check.sh
+  touch /home/user/worker_check.log
+  chown user:user /home/user/scripts/worker_check.sh /home/user/scripts/wc.sh /home/user/worker_check.log
 elif [[ "$apicheck" =~ [Nn] ]] ; then
   echo 'please generate and save your api key, farm id(s), and worker id(s) and run this script again...'
 else
   echo 'invalid response, please run this script again and enter y/n at the prompt...'
 fi
-
-chmod +x /home/user/scripts/worker_check.sh
-touch /home/user/worker_check.log
-chown user:user /home/user/scripts/worker_check.sh /home/user/scripts/wc.sh /home/user/worker_check.log
