@@ -1,0 +1,9 @@
+[Unit]
+Description=hiveos monitoring timer
+
+[Timer]
+OnBootSec=5min
+OnUnitActiveSec=7min
+
+[Install]
+WantedBy=timers.target
