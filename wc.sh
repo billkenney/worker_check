@@ -69,6 +69,7 @@ if [[ "$apicheck" =~ [Yy] ]] ; then
     sudo mv worker_check.service worker_check.timer /etc/systemd/system
     sudo systemctl daemon-reload
     sudo systemctl enable worker_check.timer
+    sudo systemctl start worker_check.timer
   elif [[ "$apikeycheck" -eq 0 ]] ; then
     echo 'please run the script again and input a valid api key...'
     exit
