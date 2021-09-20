@@ -70,7 +70,7 @@ if [[ "$apicheck" =~ [Yy] ]] ; then
     'please run the script again and input a valid worker id...'
     exit
   fi
-elif [[ "$apicheck" =~ [Nn] ]]
+elif [[ "$apicheck" =~ [Nn] ]] ; then
   echo 'please generate and save your api key, farm id(s), and worker id(s) and run this script again...'
 else
   echo 'invalid response, please run this script again and enter y/n at the prompt...'
