@@ -13,7 +13,7 @@ echo '-------------------------
 ---------------------------------------------------------------------------'
 echo 'this script must be run as the root user. if you are a member of sudo you can run the script with the below command, otherwise log in as root before running this script:
 sudo su -c "/home/user/scripts/wc.sh" - root'
-read -p 'do you have your api key, farm id, and worker id (y/n)? ' apicheck
+read -p 'are you running the script as root, and do you have your api key, farm id, and worker id (y/n)? ' apicheck
 if [[ "$apicheck" =~ [Yy] ]] ; then
   mkdir -p /home/user/scripts
   cd /home/user/scripts
