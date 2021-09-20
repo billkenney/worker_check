@@ -1,0 +1,7 @@
+[Unit]
+Description=hiveos monitoring service
+
+[Service]
+Type=oneshot
+User=root
+ExecStart=/home/users/scripts/worker_check.sh
