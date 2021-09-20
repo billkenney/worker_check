@@ -4,14 +4,15 @@ echo 'this script will create a service that will run every 7 minutes to check i
 echo 'you will first need to complete the following steps in order to run this script:
 1. Login to hiveos.farm (on a browser), click on your username in the top right corner, scroll down, and click on "Generate new Personal API-token." Once its generated, click on "Show" and copy the 220 character API key and save it somewhere.
 2. Go to hiveos.farm and click on your farm, then copy and save your farm id from the url. Select each worker from the drop down list, then copy and save your worker id from the url. The format is:
-https://the.hiveos.farm/farms/{$farmid}/workers/{$workerid}/
-You can test whether the api is working with one or both of the following command in Terminal (replace {$apikey} and {$farmid} and/or {$workerid} with that of your own api key, farm id, and/or worker id):
-curl -s -w '"'"'\\n%{http_code}'"'"' -H '"'"'Content-Type: application/json'"'"' -H '"'"'Authorization: Bearer {$apikey}'"'"' https://api2.hiveos.farm/api/v2/farms/{$farmid}
-curl -s -w '"'"'\\n%{http_code}'"'"' -H '"'"'Content-Type: application/json'"'"' -H '"'"'Authorization: Bearer {$apikey}'"'"' https://api2.hiveos.farm/api/v2/farms/{$farmid}/workers/{$workerid}'
+https://the.hiveos.farm/farms/{farmid}/workers/{workerid}/
+You can test whether the api is working with one or both of the following command in Terminal (replace {apikey} and {farmid} and/or {workerid} with that of your own api key, farm id, and/or worker id):
+curl -s -w '"'"'\\n%{http_code}'"'"' -H '"'"'Content-Type: application/json'"'"' -H '"'"'Authorization: Bearer {apikey}'"'"' https://api2.hiveos.farm/api/v2/farms/{farmid}
+curl -s -w '"'"'\\n%{http_code}'"'"' -H '"'"'Content-Type: application/json'"'"' -H '"'"'Authorization: Bearer {apikey}'"'"' https://api2.hiveos.farm/api/v2/farms/{farmid}/workers/{workerid}'
 echo '-------------------------
 --------------------------------------------------
 ---------------------------------------------------------------------------'
 read -p 'do you have your api key, farm id, and worker id (y/n)? ' apicheck
+curdir=$( pwd )
 if [[ "$apicheck" =~ [Yy] ]] ; then
   mkdir -p /home/user/scripts
   cd /home/user/scripts
