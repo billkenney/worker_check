@@ -1,0 +1,29 @@
+
+grep -o 'GPU [0-9].*$' /var/log/miner/teamredminer/teamredminer.log | sed '/Generating/d;/generation/d' | tail -{trmgpus} | sed -E 's/Mh\/s, avg.*$//g;s/^.*: ([0-9]*\.[0-9]$)/\1/g' > /tmp/trm.log
+
+gpu_count=$( wc -l /tmp/trm.log )
+if [[ "$gpu_count" -lt {trmgpus} ]] ; then
+  echo "script initiated due to a teamredminer gpu missing at `date '+%Y-%m-%d_%H:%M:%S'`" >> /home/user/worker_check.log
+  sleep 180
+  grep -o 'GPU [0-9].*$' /var/log/miner/teamredminer/teamredminer.log | sed '/Generating/d;/generation/d' | tail -{trmgpus} | sed -E 's/Mh\/s, avg.*$//g;s/^.*: ([0-9]*\.[0-9]$)/\1/g' > /tmp/trm.log
+  if [[ "$gpu_count" -lt {trmgpus} ]] ; then
+    echo "script restarted worker due to a teamredminer gpu missing at `date '+%Y-%m-%d_%H:%M:%S'`" >> /home/user/worker_check.log
+    sudo reboot
+  fi
+fi
+
+while read line ; do
+  hash_rate=$( echo "$line" | bc )
+  if [[ "$hash_rate" -eq 0 ]] ; then
+    echo "script initiated due to a teamredminer gpu having no hashrate at `date '+%Y-%m-%d_%H:%M:%S'`" >> /home/user/worker_check.log
+    sleep 180
+    grep -o 'GPU [0-9].*$' /var/log/miner/teamredminer/teamredminer.log | sed '/Generating/d;/generation/d' | tail -{trmgpus} | sed -E 's/Mh\/s, avg.*$//g;s/^.*: ([0-9]*\.[0-9]$)/\1/g' > /tmp/trm.log
+    while read line ; do
+      hash_rate=$( echo "$line" | bc )
+      if [[ "$hash_rate" -eq 0 ]] ; then
+        echo "script restarted worker due to a teamredminer gpu having no hashrate at `date '+%Y-%m-%d_%H:%M:%S'`" >> /home/user/worker_check.log
+        sudo reboot
+      fi
+    done < /tmp/trm.log
+  fi
+done < /tmp/trm.log
