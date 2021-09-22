@@ -11,7 +11,7 @@ if [[ "$gpus_online" -lt 8 ]] && [[ "$gpus_offline" -gt 0 ]] ; then
   if [[ "$gpus_online" -lt 8 ]] && [[ "$gpus_offline" -gt 0 ]] ; then
     echo "script restarted worker due to only $gpus_online gpus being online and $gpus_offline gpus being offline at `date '+%Y-%m-%d_%H:%M:%S'`" >> /home/user/worker_check.log
     # curl -X POST -H "Content-Type: application/json" -d '{"value1":"{rigname} restarted due to gpus being offline per the hiveos api"}' https://maker.ifttt.com/trigger/notify/with/key/{iftttkey} ; wait
-    sudo miner stop ; wait ; sudo shutdown -r now
+    sreboot
   fi
 fi
 
@@ -38,15 +38,15 @@ if [[ "$missed_unit_check" -eq 1 ]] || [[ "$missed_hashrate_check" -eq 1 ]] || [
   if [[ "$missed_unit_check" -eq 1 ]] ; then
     echo "script restarted worker due to worker having a missed_unit at `date '+%Y-%m-%d_%H:%M:%S'`" >> /home/user/worker_check.log
     # curl -X POST -H "Content-Type: application/json" -d '{"value1":"{rigname} restarted due to worker having a missed_unit per the hiveos api"}' https://maker.ifttt.com/trigger/notify/with/key/{iftttkey} ; wait
-    sudo miner stop ; wait ; sudo shutdown -r now
+    sreboot
   elif [[ "$missed_hashrate_check" -eq 1 ]] ; then
     echo "script restarted worker due to worker having a missed_hashrate at `date '+%Y-%m-%d_%H:%M:%S'`" >> /home/user/worker_check.log
     # curl -X POST -H "Content-Type: application/json" -d '{"value1":"{rigname} restarted due to worker having a missed_hashrate per the hiveos api"}' https://maker.ifttt.com/trigger/notify/with/key/{iftttkey} ; wait
-    sudo miner stop ; wait ; sudo shutdown -r now
+    sreboot
   elif [[ "$no_hashrate_check" -eq 1 ]] ; then
     echo "script restarted worker due to worker having no_hashrate at `date '+%Y-%m-%d_%H:%M:%S'`" >> /home/user/worker_check.log
     # curl -X POST -H "Content-Type: application/json" -d '{"value1":"{rigname} restarted due to worker having a no_hashrate per the hiveos api"}' https://maker.ifttt.com/trigger/notify/with/key/{iftttkey} ; wait
-    sudo miner stop ; wait ; sudo shutdown -r now
+    sreboot
   fi
 fi
 
@@ -59,7 +59,7 @@ if [[ "$worker_status" = 'false' ]] ; then
   if [[ "$worker_status" = 'false' ]] ; then
     echo "script restarted worker due to worker being offline at `date '+%Y-%m-%d_%H:%M:%S'`" >> /home/user/worker_check.log
     # curl -X POST -H "Content-Type: application/json" -d '{"value1":"{rigname} restarted due to worker being offline per the hiveos api"}' https://maker.ifttt.com/trigger/notify/with/key/{iftttkey} ; wait
-    sudo miner stop ; wait ; sudo shutdown -r now
+    sreboot
   fi
 elif [[ "$worker_status" != 'true' ]] && [[ "$worker_status" != 'false' ]] ; then
   echo "script initiated at `date '+%Y-%m-%d_%H:%M:%S'` but was unable to check the online status of worker" >> /home/user/worker_check.log
@@ -69,6 +69,6 @@ elif [[ "$worker_status" != 'true' ]] && [[ "$worker_status" != 'false' ]] ; the
   if [[ "$worker_status" != 'true' ]] && [[ "$worker_status1" != 'false' ]] ; then
     echo "script is still unable to check the online status of worker at `date '+%Y-%m-%d_%H:%M:%S'`" >> /home/user/worker_check.log
     # curl -X POST -H "Content-Type: application/json" -d '{"value1":"{rigname} restarted because it is unable to check its online status using the hiveos api"}' https://maker.ifttt.com/trigger/notify/with/key/{iftttkey} ; wait
-    sudo miner stop ; wait ; sudo shutdown -r now
+    sreboot
   fi
 fi
